@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 
 class TrendingManager(models.Manager):
 
-    def trending(self, model, days=30, kind=""):
+    def trending(self, model, days=30, kind="", offset=None, limit=None):
         views = self.filter(
             viewed_content_type=ContentType.objects.get_for_model(model),
             views_on__gte=datetime.date.today() - datetime.timedelta(days=days),
@@ -21,6 +21,13 @@ class TrendingManager(models.Manager):
         ).annotate(
             num_views=Avg("count")
         ).order_by("-num_views")
+
+        if offset and limit:
+            views = views[offset:offset+limit]
+        elif limit is None:
+            views = views[offset:]
+        elif offset is None:
+            views = views[:offset+limit]
 
         for d in views:
             try:
