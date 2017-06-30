@@ -2,7 +2,7 @@ import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import Sum
+from django.db.models import Avg
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -19,7 +19,7 @@ class TrendingManager(models.Manager):
             "viewed_object_id",
             "kind"
         ).annotate(
-            num_views=Sum("count")
+            num_views=Avg("count")
         ).order_by("-num_views")
 
         for d in views:
