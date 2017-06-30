@@ -28,14 +28,5 @@ class TrendingManager(models.Manager):
             views = views[offset:]
         elif offset is None:
             views = views[:offset+limit]
-
-        for d in views:
-            try:
-                d["object"] = ContentType.objects.get_for_id(
-                    d["viewed_content_type"]
-                ).get_object_for_this_type(
-                    pk=d["viewed_object_id"]
-                )
-            except ObjectDoesNotExist:
-                d["object"] = None
+        
         return views
