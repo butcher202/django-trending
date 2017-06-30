@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Count
 
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes import fields
 
 from trending.managers import TrendingManager
 
@@ -30,7 +30,7 @@ class ViewLog(DateTimeAuditModel):
 
     viewed_content_type = models.ForeignKey(ContentType)
     viewed_object_id = models.PositiveIntegerField()
-    viewed_object = generic.GenericForeignKey(
+    viewed_object = fields.GenericForeignKey(
         ct_field="viewed_content_type",
         fk_field="viewed_object_id"
     )
@@ -50,7 +50,7 @@ class DailyViewSummary(DateTimeAuditModel):
 
     viewed_content_type = models.ForeignKey(ContentType)
     viewed_object_id = models.PositiveIntegerField()
-    viewed_object = generic.GenericForeignKey(
+    viewed_object = fields.GenericForeignKey(
         ct_field="viewed_content_type",
         fk_field="viewed_object_id"
     )
